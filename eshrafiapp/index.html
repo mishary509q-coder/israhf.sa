@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل الدخول - إشرافي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding-top: 80px;
+      overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom right, #ffffff, #d0e8d0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      transition: opacity 0.8s ease;
+    }
+
+    .fade-out {
+      animation: fadeOut 1s ease-in-out forwards;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    .splash-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .splash-logo {
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .splash-logo.side {
+      width: 80px;
+    }
+
+    .splash-logo.main-logo {
+      width: 140px;
+      animation-delay: 0.6s;
+    }
+
+    .splash-logo.left { animation-delay: 0.3s; }
+    .splash-logo.right { animation-delay: 0.9s; }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: scale(1.05); }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #2e8b57;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 60px;
+      z-index: 1000;
+    }
+
+    .nav-left { font-weight: bold; }
+
+    .nav-right button {
+      background: none;
+      border: none;
+      color: white;
+      margin-left: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .nav-right button:hover { text-decoration: underline; }
+
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 140px);
+      flex-direction: column;
+    }
+
+    .login-container {
+      max-width: 400px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+      z-index: 100;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+
+    .logo {
+      width: 70px;
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      text-align: center;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    button.submit-btn {
+      background-color: #2e8b57;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button.submit-btn:hover {
+      background-color: #246b45;
+    }
+
+    .about-link {
+      margin-top: 20px;
+    }
+
+    .about-link a {
+      color: #2e8b57;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .about-link a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 60px;
+      background-color: #2e8b57;
+      color: white;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 14px;
+      z-index: 999;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .footer-logo {
+      height: 35px;
+      margin: 0 auto;
+    }
+
+    .footer-right {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .footer-left {
+      text-align: left;
+    }
+
+    .footer-left a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer-left a:hover {
+      text-decoration: underline;
+    }
+
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode .login-container {
+      background-color: #2c2c2c;
+      color: #f0f0f0;
+    }
+
+    body.dark-mode input {
+      background-color: #444;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    body.dark-mode button.submit-btn {
+      background-color: #4caf50;
+    }
+
+    body.dark-mode button.submit-btn:hover {
+      background-color: #388e3c;
+    }
+
+    body.dark-mode .navbar,
+    body.dark-mode .footer-bar {
+      background-color: #1c1c1c;
+    }
+
+    body.dark-mode .about-link a,
+    body.dark-mode .footer-left a,
+    body.dark-mode .footer-right {
+      color: #4caf50;
+    }
+
+    body.dark-mode .footer-logo {
+      filter: brightness(0.8);
+    }
+
+    body.dark-mode .splash-screen {
+      background: linear-gradient(to bottom right, #1e1e1e, #333);
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+      <img src="school-logo.png" alt="شعار المدرسة" class="splash-logo side left">
+      <img src="ministry-logo.png" alt="شعار الوزارة" class="splash-logo center main-logo">
+      <img src="logo.png" alt="شعار اشرافي" class="splash-logo side right">
+    </div>
+  </div>
+
+  <div class="navbar">
+    <div class="nav-left">إشرافي</div>
+    <div class="nav-right">
+      <button onclick="toggleMode()">🌙 / ☀️</button>
+    </div>
+  </div>
+
+  <div class="login-wrapper">
+    <div class="login-container">
+      <img src="logo.png" alt="شعار إشرافي" class="logo">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="username" placeholder="اسم المستخدم">
+      <input type="password" id="password" placeholder="كلمة المرور">
+      <button class="submit-btn" onclick="login()">دخول</button>
+      <div class="about-link">
+        <a href="school-history.html">❓ من نحن</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div class="footer-right">© جميع الحقوق محفوظة لإشرافي 2025</div>
+    <img src="vision2030.png" alt="رؤية 2030" class="footer-logo">
+    <div class="footer-left">
+      <a href="mailto:contact@eshrafi.edu.sa" class="contact-link">📧 تواصل معنا</a>
+    </div>
+  </div>
+
+<script>
+  function toggleMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+  }
+
+  window.onload = () => {
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+
+    setTimeout(() => {
+      const splash = document.getElementById("splashScreen");
+      if (splash) {
+        splash.classList.add("fade-out");
+        setTimeout(() => splash.style.display = "none", 1000);
+      }
+    }, 2500);
+  };
+
+  function login() {
+    const user = document.getElementById("username").value.trim().toLowerCase();
+    const pass = document.getElementById("password").value.trim();
+
+    if (user === "teacher" && pass === "1234") {
+      window.location.href = "dashboard.html";
+    } else if (user === "agent" && pass === "1234") {
+      window.location.href = "agent.html";
+    } else if (user === "manager" && pass === "1234") {
+      window.location.href = "manager.html";
+    } else {
+      alert("بيانات الدخول غير صحيحة. يرجى التحقق من اسم المستخدم وكلمة المرور.");
+    }
+  }
+</script>

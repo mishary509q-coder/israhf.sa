@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>تسجيل الحضور - إشرافي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f4f8;
+      direction: rtl;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    .navbar {
+      background-color: #2e8b57;
+      color: white;
+      padding: 12px 20px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 20px auto;
+    }
+
+    .navbar .center {
+      flex: 1;
+      text-align: center;
+    }
+
+    .navbar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .card {
+      background-color: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      margin: auto;
+    }
+
+    body.dark-mode .card {
+      background-color: #2c2c2c;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #2e8b57;
+    }
+
+    body.dark-mode h2 {
+      color: #a0e0c0;
+    }
+
+    .student {
+      margin-bottom: 25px;
+      text-align: right;
+    }
+
+    .student p {
+      margin: 0 0 8px;
+      font-weight: bold;
+    }
+
+    .student select,
+    .student input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    body.dark-mode .student select,
+    body.dark-mode .student input {
+      background-color: #444;
+      color: white;
+      border: 1px solid #666;
+    }
+
+    button {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #2e8b57;
+      color: white;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #246b45;
+    }
+
+    #confirmation {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- ✅ الشريط العلوي الأخضر -->
+  <div class="navbar">
+    <button onclick="toggleDarkMode()">🌙</button>
+    <div class="center"><strong>إشرافي</strong></div>
+    <button onclick="logout()">🔓</button>
+  </div>
+
+  <!-- ✅ بطاقة تسجيل الحضور -->
+  <div class="card">
+    <h2>تسجيل الحضور لـ <span id="className"></span></h2>
+
+ <div class="student">
+  <p>أحمد نبيه أرفلي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>أحمد وجدي بابطين</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>أرال إبراهيم أرشان</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>أنس منصور الحربي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>إحسان محمد مدني</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>أحمد محمد السرحي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>بدر عبدالرحمن العوفي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>حسين عمر مليباري</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>رضوان عبدالرحيم بخاري</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>ريان سلطان العرفي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>زكي عماد حريري</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>سعود الكديوي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>صهيب أيمن طيب</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>صهيب عبدالله المرشدي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالإله إبراهيم المولد</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالعزيز أمجد السيد</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالعزيز عاطف جهري</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالله مهدي باحكيم</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالله محمد اللحجي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عبدالله فيصل العتيبي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عمار صالح الغامدي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عمر عماد حمدان</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>عمر فهد الشريف</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>فادي هاني ملاكا</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>فراس عبدالله الزهراني</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>فيصل حاتم عزوز</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>فيصل محمد باهادر</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>قصي حاتم موسى</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>محمد حسن شعيب</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>محمد عبدالله القماني</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>مشاري معيض القرني</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>مصعب أيمن عياش</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>موفق انمار فلمبان</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>يزن وجدي الحازمي</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+<div class="student">
+  <p>يوسف وهيب بدر</p>
+  <select class="status">
+    <option value="حاضر">✅ حاضر</option>
+    <option value="غائب">❌ غائب</option>
+    <option value="متأخر">🟡 متأخر</option>
+  </select>
+  <input type="text" placeholder="تفاصيل (اختياري)">
+</div>
+
+    <button onclick="submitAttendance()">إرسال الحضور</button>
+    <p id="confirmation"></p>
+  </div>
+
+  <script>
+    document.getElementById("className").innerText = localStorage.getItem("selectedClass") || "الصف";
+
+    function submitAttendance() {
+      const students = document.querySelectorAll(".student");
+      let attendanceData = [];
+
+      students.forEach(student => {
+        const name = student.querySelector("p").innerText;
+        const status = student.querySelector("select").value;
+        const note = student.querySelector("input").value;
+        attendanceData.push({ name, status, note });
+      });
+
+      localStorage.setItem("attendance", JSON.stringify(attendanceData));
+      document.getElementById("confirmation").textContent = "✅ تم إرسال الحضور بنجاح";
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+      }
+    };
+
+    function logout() {
+      localStorage.clear();
+      location.replace("index.html");
+    }
+  </script>
+</body>
+</html>

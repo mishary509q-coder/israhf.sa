@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>لوحة المدير - إشرافي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #eee;
+    }
+
+    .navbar {
+      background-color: #2e8b57;
+      color: white;
+      padding: 0 20px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;      /* وسط عمودي */
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 60px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 15px;   /* مسافة بين الأزرار */
+    }
+
+    .navbar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    h2, h3 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .absence-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .absence-table th, .absence-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: right;
+    }
+
+    .absence-table th {
+      background-color: #eee;
+    }
+
+    .status-absent {
+      color: red;
+      font-weight: bold;
+    }
+
+    .status-late {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .charts-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .chart-box {
+      width: 48%;
+      height: 280px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .chart-box canvas {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 100% !important;
+      height: 220px !important;
+    }
+
+    @media (max-width: 768px) {
+      .charts-row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .chart-box {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-right">
+      <strong>إشرافي</strong>
+    </div>
+    <div class="nav-center">
+      <button onclick="toggleDarkMode()">🌙</button>
+      <button onclick="goToDashboard()">📂 لوحة التحكم</button>
+      <button id="logoutBtn" onclick="logout()">🔓 تسجيل الخروج</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 id="welcome">مرحبًا، وكيل المدرسة 👋</h2>
+
+    <label>عرض الإحصائيات حسب:</label>
+    <select id="period">
+      <option value="day">اليوم</option>
+      <option value="week">أسبوع</option>
+      <option value="month">شهر</option>
+    </select>
+
+    <div class="charts-row">
+      <div class="chart-box chart-right">
+        <h3>📊 أكثر الفصول غيابًا</h3>
+        <canvas id="classChart"></canvas>
+      </div>
+      <div class="chart-box chart-left">
+        <h3>👥 أكثر الطلاب غيابًا</h3>
+        <canvas id="studentChart"></canvas>
+      </div>
+    </div>
+
+    <h3>📅 حالات اليوم </h3>
+    <table class="absence-table">
+      <thead>
+        <tr>
+          <th>اسم الطالب</th>
+          <th>الحالة</th>
+          <th>ملاحظة المعلم</th>
+          <th>الاعتماد</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>مشاري القرني</td>
+          <td class="status-absent">❌ غائب</td>
+          <td>لم يحضر الحصة الأولى</td>
+          <td>
+            <button onclick="approveAbsence(this)">✅ اعتماد</button>
+            <button onclick="removeRow(this)">🗑️ إعفاء</button>
+          </td>
+        </tr>
+        <tr>
+          <td>احمد بابطين</td>
+          <td class="status-late">🟡 متأخر</td>
+          <td>وصل بعد الطابور</td>
+          <td>
+            <button onclick="approveAbsence(this)">✅ اعتماد</button>
+            <button onclick="removeRow(this)">🗑️ إعفاء</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+<th>الحصص غير المرسلة</th>
+    <table class="absence-table">
+      <thead>
+        <tr>
+          <th>اسم المعلم</th>
+          <th>عدد الحصص غير المرسلة</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+  <td>سيف الثقفي</td>
+  <td>الحصة الثالثة، الحصة الرابعة، الحصة السادسة</td>
+  <td><button onclick="remindTeacher(this)">🔔 تذكير</button></td>
+</tr>
+<tr>
+  <td>محمد قدح</td>
+  <td>الحصة الأولى، الحصة الخامسة</td>
+  <td><button onclick="remindTeacher(this)">🔔 تذكير</button></td>
+</tr>
+<tr>
+  <td>عبدالله باسليمان</td>
+  <td>الحصة الثانية</td>
+  <td><button onclick="remindTeacher(this)">🔔 تذكير</button></td>
+</tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+  document.getElementById("welcome").textContent = localStorage.getItem("agentName") || "وكيل المدرسة 👋";
+
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+  }
+
+  function logout() {
+    localStorage.clear();
+    window.location.href = "index.html";
+  }
+
+  function goToDashboard() {
+    window.location.href = "admin-panel.html"; // غيّر اسم الصفحة إذا مختلف
+  }
+
+  function approveAbsence(button) {
+    const row = button.closest("tr");
+    const studentName = row.cells[0].textContent.trim();
+    alert(`تم إرسال رسالة غياب إلى ولي أمر الطالب: ${studentName}`);
+  }
+
+  function removeRow(button) {
+    const row = button.closest("tr");
+    row.remove();
+  }
+
+  function remindTeacher(button) {
+    const row = button.closest("tr");
+    const teacherName = row.cells[0].textContent.trim();
+    alert(`تم إرسال تذكير إلى ${teacherName} لإرسال بيانات الحصص.`);
+  }
+
+  new Chart(document.getElementById('classChart'), {
+    type: 'bar',
+    data: {
+      labels: ['الصف الأول', 'الصف الثاني', 'الصف الثالث'],
+      datasets: [{
+        label: 'عدد الغياب',
+        data: [12, 8, 5],
+        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'الفصول الأكثر غيابًا' }
+      },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  new Chart(document.getElementById('studentChart'), {
+    type: 'bar',
+    data: {
+      labels: ['أحمد محمد', 'احمد بابطين', 'مشاري القرني'],
+      datasets: [{
+        label: 'عدد الغياب',
+        data: [5, 4, 3],
+        backgroundColor: ['#4bc0c0', '#9966ff', '#ff9f40']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'الطلاب الأكثر غيابًا' }
+      },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+</script>
+</body>
+</html>
